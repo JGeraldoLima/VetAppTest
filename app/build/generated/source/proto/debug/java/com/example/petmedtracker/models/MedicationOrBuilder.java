@@ -104,4 +104,16 @@ public interface MedicationOrBuilder extends
    */
   com.google.protobuf.ByteString
       getDurationBytes();
+
+  /**
+   * <code>string voice_note_path = 9;</code>
+   * @return The voiceNotePath.
+   */
+  java.lang.String getVoiceNotePath();
+  /**
+   * <code>string voice_note_path = 9;</code>
+   * @return The bytes for voiceNotePath.
+   */
+  com.google.protobuf.ByteString
+      getVoiceNotePathBytes();
 }

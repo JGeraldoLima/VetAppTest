@@ -22,6 +22,9 @@ interface MedicationDao {
     @Query("SELECT * FROM medications WHERE petId = :petId ORDER BY startDate DESC")
     suspend fun getMedicationsByPetIdOnce(petId: String): List<MedicationEntity>
 
+    @Query("SELECT * FROM medications WHERE id = :id")
+    suspend fun getMedicationById(id: String): MedicationEntity?
+
     @Query("DELETE FROM medications WHERE id = :id")
     suspend fun deleteById(id: String)
 }

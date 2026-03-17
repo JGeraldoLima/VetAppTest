@@ -6,6 +6,7 @@ import androidx.room.CoroutinesRoom;
 import androidx.room.EntityInsertionAdapter;
 import androidx.room.RoomDatabase;
 import androidx.room.RoomSQLiteQuery;
+import androidx.room.SharedSQLiteStatement;
 import androidx.room.util.CursorUtil;
 import androidx.room.util.DBUtil;
 import androidx.sqlite.db.SupportSQLiteStatement;
@@ -31,6 +32,8 @@ public final class PetDao_Impl implements PetDao {
   private final RoomDatabase __db;
 
   private final EntityInsertionAdapter<PetEntity> __insertionAdapterOfPetEntity;
+
+  private final SharedSQLiteStatement __preparedStmtOfDeleteById;
 
   public PetDao_Impl(RoomDatabase __db) {
     this.__db = __db;
@@ -69,6 +72,13 @@ public final class PetDao_Impl implements PetDao {
         }
       }
     };
+    this.__preparedStmtOfDeleteById = new SharedSQLiteStatement(__db) {
+      @Override
+      public String createQuery() {
+        final String _query = "DELETE FROM pets WHERE id = ?";
+        return _query;
+      }
+    };
   }
 
   @Override
@@ -101,6 +111,31 @@ public final class PetDao_Impl implements PetDao {
           return Unit.INSTANCE;
         } finally {
           __db.endTransaction();
+        }
+      }
+    }, continuation);
+  }
+
+  @Override
+  public Object deleteById(final String id, final Continuation<? super Unit> continuation) {
+    return CoroutinesRoom.execute(__db, true, new Callable<Unit>() {
+      @Override
+      public Unit call() throws Exception {
+        final SupportSQLiteStatement _stmt = __preparedStmtOfDeleteById.acquire();
+        int _argIndex = 1;
+        if (id == null) {
+          _stmt.bindNull(_argIndex);
+        } else {
+          _stmt.bindString(_argIndex, id);
+        }
+        __db.beginTransaction();
+        try {
+          _stmt.executeUpdateDelete();
+          __db.setTransactionSuccessful();
+          return Unit.INSTANCE;
+        } finally {
+          __db.endTransaction();
+          __preparedStmtOfDeleteById.release(_stmt);
         }
       }
     }, continuation);

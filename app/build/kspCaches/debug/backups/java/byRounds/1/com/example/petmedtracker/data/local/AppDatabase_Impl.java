@@ -42,14 +42,14 @@ public final class AppDatabase_Impl extends AppDatabase {
 
   @Override
   protected SupportSQLiteOpenHelper createOpenHelper(DatabaseConfiguration configuration) {
-    final SupportSQLiteOpenHelper.Callback _openCallback = new RoomOpenHelper(configuration, new RoomOpenHelper.Delegate(2) {
+    final SupportSQLiteOpenHelper.Callback _openCallback = new RoomOpenHelper(configuration, new RoomOpenHelper.Delegate(3) {
       @Override
       public void createAllTables(SupportSQLiteDatabase _db) {
         _db.execSQL("CREATE TABLE IF NOT EXISTS `pets` (`id` TEXT NOT NULL, `name` TEXT NOT NULL, `species` TEXT NOT NULL, `breed` TEXT NOT NULL, `birthday` TEXT NOT NULL, PRIMARY KEY(`id`))");
-        _db.execSQL("CREATE TABLE IF NOT EXISTS `medications` (`id` TEXT NOT NULL, `petId` TEXT NOT NULL, `medicationName` TEXT NOT NULL, `dosage` TEXT NOT NULL, `frequency` TEXT NOT NULL, `notesInstructions` TEXT NOT NULL, `startDate` TEXT NOT NULL, `duration` TEXT NOT NULL, PRIMARY KEY(`id`), FOREIGN KEY(`petId`) REFERENCES `pets`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )");
+        _db.execSQL("CREATE TABLE IF NOT EXISTS `medications` (`id` TEXT NOT NULL, `petId` TEXT NOT NULL, `medicationName` TEXT NOT NULL, `dosage` TEXT NOT NULL, `frequency` TEXT NOT NULL, `notesInstructions` TEXT NOT NULL, `startDate` TEXT NOT NULL, `duration` TEXT NOT NULL, `voiceNotePath` TEXT NOT NULL, PRIMARY KEY(`id`), FOREIGN KEY(`petId`) REFERENCES `pets`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )");
         _db.execSQL("CREATE INDEX IF NOT EXISTS `index_medications_petId` ON `medications` (`petId`)");
         _db.execSQL("CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)");
-        _db.execSQL("INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '24ce4da56ccf6a9ac75c2a6b17c910dd')");
+        _db.execSQL("INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'a11d737d144ce8938ae45a6908836443')");
       }
 
       @Override
@@ -110,7 +110,7 @@ public final class AppDatabase_Impl extends AppDatabase {
                   + " Expected:\n" + _infoPets + "\n"
                   + " Found:\n" + _existingPets);
         }
-        final HashMap<String, TableInfo.Column> _columnsMedications = new HashMap<String, TableInfo.Column>(8);
+        final HashMap<String, TableInfo.Column> _columnsMedications = new HashMap<String, TableInfo.Column>(9);
         _columnsMedications.put("id", new TableInfo.Column("id", "TEXT", true, 1, null, TableInfo.CREATED_FROM_ENTITY));
         _columnsMedications.put("petId", new TableInfo.Column("petId", "TEXT", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
         _columnsMedications.put("medicationName", new TableInfo.Column("medicationName", "TEXT", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
@@ -119,6 +119,7 @@ public final class AppDatabase_Impl extends AppDatabase {
         _columnsMedications.put("notesInstructions", new TableInfo.Column("notesInstructions", "TEXT", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
         _columnsMedications.put("startDate", new TableInfo.Column("startDate", "TEXT", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
         _columnsMedications.put("duration", new TableInfo.Column("duration", "TEXT", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
+        _columnsMedications.put("voiceNotePath", new TableInfo.Column("voiceNotePath", "TEXT", true, 0, null, TableInfo.CREATED_FROM_ENTITY));
         final HashSet<TableInfo.ForeignKey> _foreignKeysMedications = new HashSet<TableInfo.ForeignKey>(1);
         _foreignKeysMedications.add(new TableInfo.ForeignKey("pets", "CASCADE", "NO ACTION",Arrays.asList("petId"), Arrays.asList("id")));
         final HashSet<TableInfo.Index> _indicesMedications = new HashSet<TableInfo.Index>(1);
@@ -132,7 +133,7 @@ public final class AppDatabase_Impl extends AppDatabase {
         }
         return new RoomOpenHelper.ValidationResult(true, null);
       }
-    }, "24ce4da56ccf6a9ac75c2a6b17c910dd", "76b735ffcc2e3e54badc94c0936f3ba2");
+    }, "a11d737d144ce8938ae45a6908836443", "73d4b8f758fb74c3994d41ea890cd538");
     final SupportSQLiteOpenHelper.Configuration _sqliteConfig = SupportSQLiteOpenHelper.Configuration.builder(configuration.context)
         .name(configuration.name)
         .callback(_openCallback)

@@ -11,7 +11,7 @@ import org.koin.dsl.module
 val presentationModule = module {
 
     viewModel { PetListViewModel(get()) }
-    viewModel { PetDetailViewModel(get(), get(), get(), get()) }
-    viewModel { AddMedicationViewModel(get(), get(), get()) }
-    viewModel { AddPetViewModel(get()) }
+    viewModel { PetDetailViewModel(get(), get(), get(), get(), get(), get(), get(), get(), get()) }
+    viewModel { AddMedicationViewModel(get(), get(), get(), get(), get()) }
+    viewModel { AddPetViewModel(get(), get(), get()) }
 }

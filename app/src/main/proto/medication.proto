@@ -15,4 +15,5 @@ message Medication {
   string notes_instructions = 6;
   string start_date = 7;
   string duration = 8;
+  string voice_note_path = 9;
 }

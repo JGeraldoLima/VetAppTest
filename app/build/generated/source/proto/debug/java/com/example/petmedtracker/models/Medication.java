@@ -22,6 +22,7 @@ public  final class Medication extends
     notesInstructions_ = "";
     startDate_ = "";
     duration_ = "";
+    voiceNotePath_ = "";
   }
   public static final int ID_FIELD_NUMBER = 1;
   private java.lang.String id_;
@@ -396,6 +397,53 @@ public  final class Medication extends
       com.google.protobuf.ByteString value) {
     checkByteStringIsUtf8(value);
     duration_ = value.toStringUtf8();
+
+  }
+
+  public static final int VOICE_NOTE_PATH_FIELD_NUMBER = 9;
+  private java.lang.String voiceNotePath_;
+  /**
+   * <code>string voice_note_path = 9;</code>
+   * @return The voiceNotePath.
+   */
+  @java.lang.Override
+  public java.lang.String getVoiceNotePath() {
+    return voiceNotePath_;
+  }
+  /**
+   * <code>string voice_note_path = 9;</code>
+   * @return The bytes for voiceNotePath.
+   */
+  @java.lang.Override
+  public com.google.protobuf.ByteString
+      getVoiceNotePathBytes() {
+    return com.google.protobuf.ByteString.copyFromUtf8(voiceNotePath_);
+  }
+  /**
+   * <code>string voice_note_path = 9;</code>
+   * @param value The voiceNotePath to set.
+   */
+  private void setVoiceNotePath(
+      java.lang.String value) {
+    java.lang.Class<?> valueClass = value.getClass();
+  
+    voiceNotePath_ = value;
+  }
+  /**
+   * <code>string voice_note_path = 9;</code>
+   */
+  private void clearVoiceNotePath() {
+
+    voiceNotePath_ = getDefaultInstance().getVoiceNotePath();
+  }
+  /**
+   * <code>string voice_note_path = 9;</code>
+   * @param value The bytes for voiceNotePath to set.
+   */
+  private void setVoiceNotePathBytes(
+      com.google.protobuf.ByteString value) {
+    checkByteStringIsUtf8(value);
+    voiceNotePath_ = value.toStringUtf8();
 
   }
 
@@ -888,6 +936,55 @@ public  final class Medication extends
       return this;
     }
 
+    /**
+     * <code>string voice_note_path = 9;</code>
+     * @return The voiceNotePath.
+     */
+    @java.lang.Override
+    public java.lang.String getVoiceNotePath() {
+      return instance.getVoiceNotePath();
+    }
+    /**
+     * <code>string voice_note_path = 9;</code>
+     * @return The bytes for voiceNotePath.
+     */
+    @java.lang.Override
+    public com.google.protobuf.ByteString
+        getVoiceNotePathBytes() {
+      return instance.getVoiceNotePathBytes();
+    }
+    /**
+     * <code>string voice_note_path = 9;</code>
+     * @param value The voiceNotePath to set.
+     * @return This builder for chaining.
+     */
+    public Builder setVoiceNotePath(
+        java.lang.String value) {
+      copyOnWrite();
+      instance.setVoiceNotePath(value);
+      return this;
+    }
+    /**
+     * <code>string voice_note_path = 9;</code>
+     * @return This builder for chaining.
+     */
+    public Builder clearVoiceNotePath() {
+      copyOnWrite();
+      instance.clearVoiceNotePath();
+      return this;
+    }
+    /**
+     * <code>string voice_note_path = 9;</code>
+     * @param value The bytes for voiceNotePath to set.
+     * @return This builder for chaining.
+     */
+    public Builder setVoiceNotePathBytes(
+        com.google.protobuf.ByteString value) {
+      copyOnWrite();
+      instance.setVoiceNotePathBytes(value);
+      return this;
+    }
+
     // @@protoc_insertion_point(builder_scope:petmedtracker.models.Medication)
   }
   @java.lang.Override
@@ -912,10 +1009,11 @@ public  final class Medication extends
             "notesInstructions_",
             "startDate_",
             "duration_",
+            "voiceNotePath_",
           };
           java.lang.String info =
-              "\u0000\b\u0000\u0000\u0001\b\b\u0000\u0000\u0000\u0001\u0208\u0002\u0208\u0003\u0208" +
-              "\u0004\u0208\u0005\u0208\u0006\u0208\u0007\u0208\b\u0208";
+              "\u0000\t\u0000\u0000\u0001\t\t\u0000\u0000\u0000\u0001\u0208\u0002\u0208\u0003\u0208" +
+              "\u0004\u0208\u0005\u0208\u0006\u0208\u0007\u0208\b\u0208\t\u0208";
           return newMessageInfo(DEFAULT_INSTANCE, info, objects);
       }
       // fall through

@@ -25,8 +25,10 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation.NavBackStackEntry
 import com.example.petmedtracker.presentation.common.Species
 import org.koin.androidx.compose.koinViewModel
+import org.koin.core.parameter.parametersOf
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -34,8 +36,12 @@ import java.util.Locale
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AddPetScreen(
+    navBackStackEntry: NavBackStackEntry?,
     onBack: () -> Unit,
-    viewModel: AddPetViewModel = koinViewModel()
+    viewModel: AddPetViewModel = koinViewModel(
+        viewModelStoreOwner = navBackStackEntry!!,
+        parameters = { parametersOf(navBackStackEntry.savedStateHandle) }
+    )
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
@@ -46,7 +52,7 @@ fun AddPetScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Add Pet") },
+                title = { Text(if (viewModel.isEditMode) "Edit Pet" else "Add Pet") },
                 navigationIcon = {
                     IconButton(onClick = onBack) {
                         Icon(
@@ -120,6 +126,15 @@ private fun AddPetContent(
                 Text("${species.icon}  ${species.displayName}")
             }
         }
+        OutlinedTextField(
+            value = uiState.breed,
+            onValueChange = { onAction(AddPetAction.UpdateBreed(it)) },
+            label = { Text("Breed (optional)") },
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 4.dp),
+            singleLine = true
+        )
         BirthdayPickerField(
             birthday = uiState.birthday,
             onDateSelected = { onAction(AddPetAction.UpdateBirthday(it)) },
@@ -131,7 +146,7 @@ private fun AddPetContent(
                 .fillMaxWidth()
                 .padding(top = 16.dp)
         ) {
-            Text("Save Pet")
+            Text(if (uiState.name.isNotEmpty() || uiState.species != null) "Save Pet" else "Save Pet")
         }
     }
 }

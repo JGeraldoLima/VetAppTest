@@ -12,6 +12,7 @@ fun MedicationEntity.toProto(): Medication = Medication.newBuilder()
     .setNotesInstructions(notesInstructions)
     .setStartDate(startDate)
     .setDuration(duration)
+    .setVoiceNotePath(voiceNotePath)
     .build()
 
 fun Medication.toEntity(): MedicationEntity = MedicationEntity(
@@ -22,5 +23,6 @@ fun Medication.toEntity(): MedicationEntity = MedicationEntity(
     frequency = frequency,
     notesInstructions = notesInstructions,
     startDate = startDate,
-    duration = duration
+    duration = duration,
+    voiceNotePath = voiceNotePath
 )

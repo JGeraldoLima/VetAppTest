@@ -16,7 +16,14 @@ class MedicationRepositoryImpl constructor(
             entities.map { it.toProto() }
         }
 
+    override suspend fun getMedicationById(id: String): Medication? =
+        medicationDao.getMedicationById(id)?.toProto()
+
     override suspend fun addMedication(medication: Medication): Result<Unit> = runCatching {
         medicationDao.insert(medication.toEntity())
+    }
+
+    override suspend fun deleteMedication(id: String): Result<Unit> = runCatching {
+        medicationDao.deleteById(id)
     }
 }

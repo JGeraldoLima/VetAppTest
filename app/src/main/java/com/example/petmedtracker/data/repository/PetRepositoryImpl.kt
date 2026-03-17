@@ -20,4 +20,8 @@ class PetRepositoryImpl constructor(
     override suspend fun addPet(pet: Pet): Result<Unit> = runCatching {
         petDao.insert(pet.toEntity())
     }
+
+    override suspend fun deletePet(id: String): Result<Unit> = runCatching {
+        petDao.deleteById(id)
+    }
 }

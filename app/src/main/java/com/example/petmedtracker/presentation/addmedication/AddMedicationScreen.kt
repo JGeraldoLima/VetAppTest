@@ -1,6 +1,12 @@
 package com.example.petmedtracker.presentation.addmedication
 
+import android.Manifest
+import android.content.pm.PackageManager
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
@@ -8,6 +14,10 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.CalendarToday
+import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Mic
+import androidx.compose.material.icons.filled.PlayArrow
+import androidx.compose.material.icons.filled.Stop
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -22,8 +32,10 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.core.content.ContextCompat
 import androidx.compose.material3.DatePicker
 import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.rememberDatePickerState
@@ -54,7 +66,10 @@ fun AddMedicationScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Add medication${if (uiState.petName.isNotEmpty()) " for ${uiState.petName}" else ""}") },
+                title = { Text(
+                    if (viewModel.isEditMode) "Edit medication${if (uiState.petName.isNotEmpty()) " for ${uiState.petName}" else ""}"
+                    else "Add medication${if (uiState.petName.isNotEmpty()) " for ${uiState.petName}" else ""}"
+                ) },
                 navigationIcon = {
                     IconButton(onClick = onBack) {
                         Icon(
@@ -80,6 +95,19 @@ private fun AddMedicationContent(
     uiState: AddMedicationUiState,
     onAction: (AddMedicationAction) -> Unit
 ) {
+    val context = LocalContext.current
+    val recordPermissionLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.RequestPermission()
+    ) { granted ->
+        if (granted) onAction(AddMedicationAction.StartRecording)
+    }
+    fun requestRecordAndStart() {
+        if (ContextCompat.checkSelfPermission(context, Manifest.permission.RECORD_AUDIO) == PackageManager.PERMISSION_GRANTED) {
+            onAction(AddMedicationAction.StartRecording)
+        } else {
+            recordPermissionLauncher.launch(Manifest.permission.RECORD_AUDIO)
+        }
+    }
     val scrollState = rememberScrollState()
     Column(
         modifier = modifier
@@ -143,6 +171,35 @@ private fun AddMedicationContent(
                 .padding(vertical = 4.dp),
             minLines = 2
         )
+        Text(
+            text = "Voice note",
+            style = androidx.compose.material3.MaterialTheme.typography.labelMedium,
+            modifier = Modifier.padding(top = 12.dp, bottom = 4.dp)
+        )
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            if (uiState.isRecording) {
+                Button(onClick = { onAction(AddMedicationAction.StopRecording) }) {
+                    Icon(Icons.Default.Stop, contentDescription = null, modifier = Modifier.padding(end = 4.dp))
+                    Text("Stop")
+                }
+            } else {
+                Button(onClick = { requestRecordAndStart() }) {
+                    Icon(Icons.Default.Mic, contentDescription = null, modifier = Modifier.padding(end = 4.dp))
+                    Text("Record")
+                }
+            }
+            if (uiState.voiceNotePath.isNotEmpty()) {
+                IconButton(onClick = { onAction(AddMedicationAction.PlayVoiceNote) }) {
+                    Icon(Icons.Default.PlayArrow, contentDescription = "Play")
+                }
+                IconButton(onClick = { onAction(AddMedicationAction.DeleteVoiceNote) }) {
+                    Icon(Icons.Default.Delete, contentDescription = "Delete")
+                }
+            }
+        }
         Button(
             onClick = { onAction(AddMedicationAction.Save) },
             modifier = Modifier

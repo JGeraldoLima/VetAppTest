@@ -26,5 +26,6 @@ data class MedicationEntity(
     val frequency: String,
     val notesInstructions: String = "",
     val startDate: String,
-    val duration: String
+    val duration: String,
+    val voiceNotePath: String = ""
 )

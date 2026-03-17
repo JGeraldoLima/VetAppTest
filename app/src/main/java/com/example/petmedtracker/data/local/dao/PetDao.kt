@@ -24,4 +24,7 @@ interface PetDao {
 
     @Query("SELECT * FROM pets WHERE id = :id")
     suspend fun getPetByIdOnce(id: String): PetEntity?
+
+    @Query("DELETE FROM pets WHERE id = :id")
+    suspend fun deleteById(id: String)
 }

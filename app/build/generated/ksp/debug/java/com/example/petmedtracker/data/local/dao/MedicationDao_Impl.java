@@ -40,7 +40,7 @@ public final class MedicationDao_Impl implements MedicationDao {
     this.__insertionAdapterOfMedicationEntity = new EntityInsertionAdapter<MedicationEntity>(__db) {
       @Override
       public String createQuery() {
-        return "INSERT OR REPLACE INTO `medications` (`id`,`petId`,`medicationName`,`dosage`,`frequency`,`notesInstructions`,`startDate`,`duration`) VALUES (?,?,?,?,?,?,?,?)";
+        return "INSERT OR REPLACE INTO `medications` (`id`,`petId`,`medicationName`,`dosage`,`frequency`,`notesInstructions`,`startDate`,`duration`,`voiceNotePath`) VALUES (?,?,?,?,?,?,?,?,?)";
       }
 
       @Override
@@ -84,6 +84,11 @@ public final class MedicationDao_Impl implements MedicationDao {
           stmt.bindNull(8);
         } else {
           stmt.bindString(8, value.getDuration());
+        }
+        if (value.getVoiceNotePath() == null) {
+          stmt.bindNull(9);
+        } else {
+          stmt.bindString(9, value.getVoiceNotePath());
         }
       }
     };
@@ -180,6 +185,7 @@ public final class MedicationDao_Impl implements MedicationDao {
           final int _cursorIndexOfNotesInstructions = CursorUtil.getColumnIndexOrThrow(_cursor, "notesInstructions");
           final int _cursorIndexOfStartDate = CursorUtil.getColumnIndexOrThrow(_cursor, "startDate");
           final int _cursorIndexOfDuration = CursorUtil.getColumnIndexOrThrow(_cursor, "duration");
+          final int _cursorIndexOfVoiceNotePath = CursorUtil.getColumnIndexOrThrow(_cursor, "voiceNotePath");
           final List<MedicationEntity> _result = new ArrayList<MedicationEntity>(_cursor.getCount());
           while(_cursor.moveToNext()) {
             final MedicationEntity _item;
@@ -231,7 +237,13 @@ public final class MedicationDao_Impl implements MedicationDao {
             } else {
               _tmpDuration = _cursor.getString(_cursorIndexOfDuration);
             }
-            _item = new MedicationEntity(_tmpId,_tmpPetId,_tmpMedicationName,_tmpDosage,_tmpFrequency,_tmpNotesInstructions,_tmpStartDate,_tmpDuration);
+            final String _tmpVoiceNotePath;
+            if (_cursor.isNull(_cursorIndexOfVoiceNotePath)) {
+              _tmpVoiceNotePath = null;
+            } else {
+              _tmpVoiceNotePath = _cursor.getString(_cursorIndexOfVoiceNotePath);
+            }
+            _item = new MedicationEntity(_tmpId,_tmpPetId,_tmpMedicationName,_tmpDosage,_tmpFrequency,_tmpNotesInstructions,_tmpStartDate,_tmpDuration,_tmpVoiceNotePath);
             _result.add(_item);
           }
           return _result;
@@ -272,6 +284,7 @@ public final class MedicationDao_Impl implements MedicationDao {
           final int _cursorIndexOfNotesInstructions = CursorUtil.getColumnIndexOrThrow(_cursor, "notesInstructions");
           final int _cursorIndexOfStartDate = CursorUtil.getColumnIndexOrThrow(_cursor, "startDate");
           final int _cursorIndexOfDuration = CursorUtil.getColumnIndexOrThrow(_cursor, "duration");
+          final int _cursorIndexOfVoiceNotePath = CursorUtil.getColumnIndexOrThrow(_cursor, "voiceNotePath");
           final List<MedicationEntity> _result = new ArrayList<MedicationEntity>(_cursor.getCount());
           while(_cursor.moveToNext()) {
             final MedicationEntity _item;
@@ -323,8 +336,109 @@ public final class MedicationDao_Impl implements MedicationDao {
             } else {
               _tmpDuration = _cursor.getString(_cursorIndexOfDuration);
             }
-            _item = new MedicationEntity(_tmpId,_tmpPetId,_tmpMedicationName,_tmpDosage,_tmpFrequency,_tmpNotesInstructions,_tmpStartDate,_tmpDuration);
+            final String _tmpVoiceNotePath;
+            if (_cursor.isNull(_cursorIndexOfVoiceNotePath)) {
+              _tmpVoiceNotePath = null;
+            } else {
+              _tmpVoiceNotePath = _cursor.getString(_cursorIndexOfVoiceNotePath);
+            }
+            _item = new MedicationEntity(_tmpId,_tmpPetId,_tmpMedicationName,_tmpDosage,_tmpFrequency,_tmpNotesInstructions,_tmpStartDate,_tmpDuration,_tmpVoiceNotePath);
             _result.add(_item);
+          }
+          return _result;
+        } finally {
+          _cursor.close();
+          _statement.release();
+        }
+      }
+    }, continuation);
+  }
+
+  @Override
+  public Object getMedicationById(final String id,
+      final Continuation<? super MedicationEntity> continuation) {
+    final String _sql = "SELECT * FROM medications WHERE id = ?";
+    final RoomSQLiteQuery _statement = RoomSQLiteQuery.acquire(_sql, 1);
+    int _argIndex = 1;
+    if (id == null) {
+      _statement.bindNull(_argIndex);
+    } else {
+      _statement.bindString(_argIndex, id);
+    }
+    final CancellationSignal _cancellationSignal = DBUtil.createCancellationSignal();
+    return CoroutinesRoom.execute(__db, false, _cancellationSignal, new Callable<MedicationEntity>() {
+      @Override
+      public MedicationEntity call() throws Exception {
+        final Cursor _cursor = DBUtil.query(__db, _statement, false, null);
+        try {
+          final int _cursorIndexOfId = CursorUtil.getColumnIndexOrThrow(_cursor, "id");
+          final int _cursorIndexOfPetId = CursorUtil.getColumnIndexOrThrow(_cursor, "petId");
+          final int _cursorIndexOfMedicationName = CursorUtil.getColumnIndexOrThrow(_cursor, "medicationName");
+          final int _cursorIndexOfDosage = CursorUtil.getColumnIndexOrThrow(_cursor, "dosage");
+          final int _cursorIndexOfFrequency = CursorUtil.getColumnIndexOrThrow(_cursor, "frequency");
+          final int _cursorIndexOfNotesInstructions = CursorUtil.getColumnIndexOrThrow(_cursor, "notesInstructions");
+          final int _cursorIndexOfStartDate = CursorUtil.getColumnIndexOrThrow(_cursor, "startDate");
+          final int _cursorIndexOfDuration = CursorUtil.getColumnIndexOrThrow(_cursor, "duration");
+          final int _cursorIndexOfVoiceNotePath = CursorUtil.getColumnIndexOrThrow(_cursor, "voiceNotePath");
+          final MedicationEntity _result;
+          if(_cursor.moveToFirst()) {
+            final String _tmpId;
+            if (_cursor.isNull(_cursorIndexOfId)) {
+              _tmpId = null;
+            } else {
+              _tmpId = _cursor.getString(_cursorIndexOfId);
+            }
+            final String _tmpPetId;
+            if (_cursor.isNull(_cursorIndexOfPetId)) {
+              _tmpPetId = null;
+            } else {
+              _tmpPetId = _cursor.getString(_cursorIndexOfPetId);
+            }
+            final String _tmpMedicationName;
+            if (_cursor.isNull(_cursorIndexOfMedicationName)) {
+              _tmpMedicationName = null;
+            } else {
+              _tmpMedicationName = _cursor.getString(_cursorIndexOfMedicationName);
+            }
+            final String _tmpDosage;
+            if (_cursor.isNull(_cursorIndexOfDosage)) {
+              _tmpDosage = null;
+            } else {
+              _tmpDosage = _cursor.getString(_cursorIndexOfDosage);
+            }
+            final String _tmpFrequency;
+            if (_cursor.isNull(_cursorIndexOfFrequency)) {
+              _tmpFrequency = null;
+            } else {
+              _tmpFrequency = _cursor.getString(_cursorIndexOfFrequency);
+            }
+            final String _tmpNotesInstructions;
+            if (_cursor.isNull(_cursorIndexOfNotesInstructions)) {
+              _tmpNotesInstructions = null;
+            } else {
+              _tmpNotesInstructions = _cursor.getString(_cursorIndexOfNotesInstructions);
+            }
+            final String _tmpStartDate;
+            if (_cursor.isNull(_cursorIndexOfStartDate)) {
+              _tmpStartDate = null;
+            } else {
+              _tmpStartDate = _cursor.getString(_cursorIndexOfStartDate);
+            }
+            final String _tmpDuration;
+            if (_cursor.isNull(_cursorIndexOfDuration)) {
+              _tmpDuration = null;
+            } else {
+              _tmpDuration = _cursor.getString(_cursorIndexOfDuration);
+            }
+            final String _tmpVoiceNotePath;
+            if (_cursor.isNull(_cursorIndexOfVoiceNotePath)) {
+              _tmpVoiceNotePath = null;
+            } else {
+              _tmpVoiceNotePath = _cursor.getString(_cursorIndexOfVoiceNotePath);
+            }
+            _result = new MedicationEntity(_tmpId,_tmpPetId,_tmpMedicationName,_tmpDosage,_tmpFrequency,_tmpNotesInstructions,_tmpStartDate,_tmpDuration,_tmpVoiceNotePath);
+          } else {
+            _result = null;
           }
           return _result;
         } finally {
