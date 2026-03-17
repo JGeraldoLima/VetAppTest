@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package petmedtracker.models;
+
+option java_package = "com.example.petmedtracker.models";
+option java_multiple_files = true;
+option java_outer_classname = "MedicationProto";
+
+message Medication {
+  string id = 1;
+  string pet_id = 2;
+  string medication_name = 3;
+  string dosage = 4;
+  string frequency = 5;
+  string notes_instructions = 6;
+  string start_date = 7;
+  string duration = 8;
+}

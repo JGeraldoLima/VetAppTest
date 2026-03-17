@@ -1,0 +1,32 @@
+[
+  {
+    "id": "med-1",
+    "petId": "pet-1",
+    "medicationName": "Amoxicillin",
+    "dosage": "250 mg",
+    "frequency": "Twice daily",
+    "notesInstructions": "Give with food. Complete the full course.",
+    "startDate": "2025-03-01",
+    "duration": "10 days"
+  },
+  {
+    "id": "med-2",
+    "petId": "pet-1",
+    "medicationName": "Rimadyl",
+    "dosage": "50 mg",
+    "frequency": "Once daily",
+    "notesInstructions": "Give in the morning with breakfast.",
+    "startDate": "2025-03-10",
+    "duration": "7 days"
+  },
+  {
+    "id": "med-3",
+    "petId": "pet-2",
+    "medicationName": "Metacam",
+    "dosage": "0.5 mg/kg",
+    "frequency": "Once daily",
+    "notesInstructions": "As needed for pain. Do not exceed 4 days without vet approval.",
+    "startDate": "2025-03-05",
+    "duration": "As needed"
+  }
+]

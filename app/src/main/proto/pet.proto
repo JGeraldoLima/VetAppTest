@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package petmedtracker.models;
+
+option java_package = "com.example.petmedtracker.models";
+option java_multiple_files = true;
+option java_outer_classname = "PetProto";
+
+message Pet {
+  string id = 1;
+  string name = 2;
+  string species = 3;
+  string breed = 4;
+  string birthday = 5;
+}
